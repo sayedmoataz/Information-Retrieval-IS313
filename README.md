@@ -1,6 +1,13 @@
 # Information-Retrieval-IS313
 Information Retrieval College Project 
 
+project env requirements : 
+   Python 3.6+
+   install The Natural Language Toolkit (NLTK)
+         
+      pip install nltk
+      pip install regex
+      pip install more-itertools
 
    First Part 
               
