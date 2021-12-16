@@ -13,14 +13,14 @@ pip install more-itertools
 
 ## First Part 
 
-| Task | Status |
-| ------ | ------ |              
-| Read 10 files (.txt)| Done | 
-| tokenization | Done | 
-| Normalization| Done | 
-| Stop words | Done |
-| Lemmatizationa | Not Yet | 
-| Streamming "Porter Algorithm" | Done | 
+| Task | Status | |
+| ------ | ------ | ------|              
+| Read 10 files (.txt)| Done | Required |  
+| tokenization | Done | Required |
+| Normalization| Done | Optional |
+| Stop words | Done | Required |
+| Lemmatizationa | Not Yet | Optional |
+| Streamming "Porter Algorithm" | Done | Optional |
     
 ## Second Part
 
