@@ -1,94 +1,98 @@
+import math
 import os
-import re
 from itertools import chain
-from nltk.stem import PorterStemmer
-from nltk.tokenize import word_tokenize
 import nltk
+import numpy as np
 from nltk.corpus import stopwords
-
+from nltk.stem import PorterStemmer, lancaster
+from nltk.tokenize import TweetTokenizer
+from natsort import natsorted
 # nltk.download('punkt')
 # nltk.download('stopwords')
-
 '''
 first part 
-Text Processing => intial stage 
-1. tokenize 
-2. normalize 
-3. stremming 
-4. stop words 
+1. read 10 txt files
+2. Text Processing => intial stage  
+    1. tokenization  
+    2. stop words 
 '''
-
+stop_words = set(stopwords.words('english'))
+stemmer = lancaster.LancasterStemmer()
+str1 = ""  # text of all files
+no_stpwords_string = ""  # result text
+fileno = 0
+pos_index = {}
+file_map = {}
 # path of folder which contain txt files
-path = "E:/2- FCAI-HU/LV-4/Semester-1/IR/Project/txt files"
-
+path = "E:/2- FCAI-HU/LV-4/Semester-1/IR/Project/IR_Pro/txt files"
+folder_names = ["C:/Users/sayed/Downloads/Ir project/Ir project/ir"]
 # change current dir to "path"
 os.chdir(path)
-
-stop_words = set(stopwords.words('english'))
-ps = PorterStemmer()  # not a good choice 
-
-
-# Read text File
+# Read txt Files
 def read_text_file(file_path):
     with open(file_path, 'r', encoding="utf-8") as f:
         data = f.readlines()
     f.close()
     return data  # return all of txt content to tokenize them
-
-
-# loop over files
-str1 = ""  # text of all files
-no_stpwords_string = "" # result text
-
-for file in os.listdir():  # list files in the current dir => path
-    if file.endswith(".txt"):  # get .txt file only
-        file_path = f"{path}\{file}"
-        # read each file + tokenize it
-        tokens = [nltk.word_tokenize(i) for i in read_text_file(file_path)]
-        # result of tokens is 2D list => flat it to be 1D list
-        flatten_list = list(chain.from_iterable(tokens))
-        s = str(flatten_list)
-        # convert list to string
-        for ele in s:
-            str1 += ele
-
-    # make all of string lowercase
-    lower_string = str1.lower()
-
-    # remove numbers
-    no_number_string = re.sub(r'\d+', '', lower_string)
-
-    # remove punctuation => except words + spaces
-    no_punc_string = re.sub(r'[^\w\s]', '', no_number_string)
-
-    # remove white space
-    no_wspace_string = no_punc_string.strip()
-
-    # convert string => list
-    lst_string = [no_wspace_string][0].split()
-
-    # remove stop words from list
-    for i in lst_string:
-        if not i in stop_words:
-            no_stpwords_string += i + ' '
-
-    # remove last space
-    no_stpwords_string = no_stpwords_string[:-1]
-
-
-# remove single character from the result string
-result_string = re.sub(r'(?:^| )\w(?:$| )', ' ', no_stpwords_string).strip()
-
-
-# tokenized, normalized, streamming and free stop word text
-print(result_string)
-
-words = sorted(word_tokenize(result_string))
-
-for w in words:
-    print(w, " : ", ps.stem(w))
-
-
+def normalizing(string):
+    # loop over files
+    for file in os.listdir():  # list files in the current dir => path
+        if file.endswith(".txt"):  # get .txt file only
+            file_path = f"{path}\{file}"
+            # read each file + tokenize it => save in 2D list
+            tokens = [nltk.word_tokenize(i) for i in read_text_file(file_path)]
+            # flat result to 1D list
+            flatten_list = list(chain.from_iterable(tokens))
+        # remove stop words from list
+        for i in flatten_list:
+            if not i.lower() in stop_words:
+                string += i + ' ' # no_stpwords_string
+    return string
+# tokenized and free stop word text
+# print(normalizing(no_stpwords_string))
 '''
 positional index
+1. Build positional index
+2. users phrase query => returns matched documents.
 '''
+'''
+{
+    "hello" : # word 
+    [5, # number of appearing in files 
+    [ 
+        {3 : # number of first file 
+            [3, # number of appearing in this file 
+                [120, 125, 278] # index of word in this file
+            ]
+        } , { [ ] }  # and so on 
+    ] 
+}
+'''
+for folder_name in folder_names:
+    file_names = natsorted(os.listdir( folder_name))
+    for file_name in file_names:
+        stuff = read_text_file( folder_name + "/" + file_name)
+        final_token_list = normalizing(stuff)
+        for pos, term in enumerate(final_token_list):
+            term = stemmer.stem(term)
+            if term in pos_index:
+                pos_index[term][0] = pos_index[term][0] + 1
+                if fileno in pos_index[term][1]:
+                    pos_index[term][1][fileno].append(pos)
+                else:
+                    pos_index[term][1][fileno] = [pos]
+            else:
+                pos_index[term] = []
+                pos_index[term].append(1)
+                pos_index[term].append({})
+                pos_index[term][1][fileno] = [pos]
+
+        file_map[fileno] = folder_name + "/" + file_name
+        fileno += 1
+
+# user phares query
+pharseQuery=input("Enter your pharse Query To search for it :")
+pharseQuery = normalizing(pharseQuery)
+Filtered_pharseQuery = [w for w in pharseQuery if not w in stop_words]
+
+# return matched document
