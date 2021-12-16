@@ -27,8 +27,8 @@ pip install more-itertools
 
 | Task | Status |
 | ------ | ------ |
-| positional index | Not Yet | 
-| user query + return result | Not Yet |
+| positional index | Done | Required |
+| user query + return result | In Process | Required |
   
 ## Third Part
 
