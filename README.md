@@ -4,6 +4,7 @@ Information Retrieval College Project
 ## project env requirements : 
    
    Python 3.6+
+   
    install The Natural Language Toolkit (NLTK)
 ```sh
 pip install nltk
@@ -29,7 +30,7 @@ pip install more-itertools
 | positional index | Not Yet | 
 | user query + return result | Not Yet |
   
-##Third Part
+## Third Part
 
 | Task | Status |
 | ------ | ------ |
