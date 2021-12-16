@@ -1,30 +1,37 @@
 # Information-Retrieval-IS313
 Information Retrieval College Project 
 
-project env requirements : 
+## project env requirements : 
+   
    Python 3.6+
    install The Natural Language Toolkit (NLTK)
-         
-      pip install nltk
-      pip install regex
-      pip install more-itertools
+```sh
+pip install nltk
+pip install regex
+pip install more-itertools
+```
 
-   First Part 
-              
-    Read 10 files (.txt)
-    tokenization 
-    Normalization
-    Stop words 
-    Lemmatizationa => not yet 
-    Streamming "Porter Algorithm" 
+## First Part 
+
+| Task | Status |
+| ------ | ------ |              
+| Read 10 files (.txt)| Done | 
+| tokenization | Done | 
+| Normalization| Done | 
+| Stop words | Done |
+| Lemmatizationa | Not Yet | 
+| Streamming "Porter Algorithm" | Done | 
     
-  Second Part => Not Yet
-    
-    positional index
-    user query + return result 
+## Second Part
+
+| Task | Status |
+| ------ | ------ |
+| positional index | Not Yet | 
+| user query + return result | Not Yet |
   
-  
-  Third Part => Not Yet
-    
-    term document incidence matrix
+##Third Part
+
+| Task | Status |
+| ------ | ------ |
+| term document incidence matrix | Not Yet |
    
